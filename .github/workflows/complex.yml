@@ -1,6 +1,6 @@
 name: Complex
 
-on: push
+on: [push]
 
 jobs:
   ubuntu:
@@ -9,6 +9,10 @@ jobs:
     - run: date
   windows:
     runs-on: windows-latest
+    steps:
+    - run: date
+  macos:
+    runs-on: macos-latest
     steps:
     - run: date
   depends:
