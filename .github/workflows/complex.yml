@@ -10,25 +10,30 @@ jobs:
 
   windows:
     runs-on: windows-latest
-    needs: ubuntu  # Runs after ubuntu
+    needs: ubuntu
     steps:
       - name: Check if Key Vault Exists
+        id: check_keyvault  # Define an ID to access outputs later
         shell: pwsh
         run: |
-          Write-Host "##vso[task.setvariable variable=resourceExists]true"
+          if ($true) {  # Replace with your condition
+            echo "::set-output name=resourceExists::true"
+          } else {
+            echo "::set-output name=resourceExists::false"
+          }
+
       - run: date
+
       - name: Display Key Vault Properties
         shell: pwsh
         run: |
           Write-Output "Key Vault Properties:"
           Write-Output "test properties"
 
-      # Infrastructure task within the Windows job
       - name: Infrastructure Functions - Create Key Vault
         shell: pwsh
         run: |
-          # Conditionally create Key Vault if resourceExists is false
-          if ($env:resourceExists -eq "false") {
+          if ('${{ steps.check_keyvault.outputs.resourceExists }}' -eq 'false') {
             Write-Output "Creating Key Vault..."
             # Add key vault creation logic here
           } else {
@@ -39,10 +44,10 @@ jobs:
         shell: pwsh
         run: |
           Write-Output "resourceExists:"
-          Write-Output "$env:resourceExists"
+          Write-Output "${{ steps.check_keyvault.outputs.resourceExists }}"
 
   macos:
     runs-on: macos-latest
-    needs: [ubuntu, windows]  # Runs after ubuntu and windows jobs
+    needs: [ubuntu, windows]
     steps:
       - run: date
