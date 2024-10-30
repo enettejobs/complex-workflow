@@ -11,6 +11,14 @@ jobs:
     runs-on: windows-latest
     steps:
     - run: date
+    - name: Display Key Vault Properties
+      uses: azure/CLI@2
+      with:
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: |
+            Write-Output "Key Vault Properties:"
+            Write-Output "test properties"
   macos:
     runs-on: macos-latest
     steps:
