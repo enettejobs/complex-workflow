@@ -23,32 +23,27 @@ jobs:
           Write-Output "Key Vault Properties:"
           Write-Output "test properties"
 
-  infrastructure:
-    runs-on: windows-latest
-    needs: windows  # Runs after windows job
-    displayName: 'Infrastructure Functions'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-            - name: Create Key Vault (ARM Template)
-              shell: pwsh
-              run: |
-                # Simulated Key Vault creation command with conditional check on resourceExists
-                if ($env:resourceExists -eq "false") {
-                  Write-Output "Creating Key Vault..."
-                  # Add key vault creation logic here
-                } else {
-                  Write-Output "Key Vault already exists, skipping creation."
-                }
-            - name: Display Key Vault Properties
-              shell: pwsh
-              run: |
-                Write-Output "resourceExists:"
-                Write-Output "$env:resourceExists"
+      # Infrastructure task within the Windows job
+      - name: Infrastructure Functions - Create Key Vault
+        displayName: 'Infrastructure Functions'
+        shell: pwsh
+        run: |
+          # Conditionally create Key Vault if resourceExists is false
+          if ($env:resourceExists -eq "false") {
+            Write-Output "Creating Key Vault..."
+            # Add key vault creation logic here
+          } else {
+            Write-Output "Key Vault already exists, skipping creation."
+          }
+
+      - name: Display Key Vault Resource Existence Status
+        shell: pwsh
+        run: |
+          Write-Output "resourceExists:"
+          Write-Output "$env:resourceExists"
 
   macos:
     runs-on: macos-latest
-    needs: [ubuntu, windows, infrastructure]  # Runs after all jobs
+    needs: [ubuntu, windows]  # Runs after ubuntu and windows jobs
     steps:
       - run: date
