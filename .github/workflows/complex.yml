@@ -12,7 +12,6 @@ jobs:
     steps:
     - run: date
     - name: Display Key Vault Properties
-      uses: Azure/cli@v1
       with:
           scriptType: pscore
           scriptLocation: inlineScript
