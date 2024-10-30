@@ -25,7 +25,6 @@ jobs:
 
       # Infrastructure task within the Windows job
       - name: Infrastructure Functions - Create Key Vault
-        displayName: 'Infrastructure Functions'
         shell: pwsh
         run: |
           # Conditionally create Key Vault if resourceExists is false
