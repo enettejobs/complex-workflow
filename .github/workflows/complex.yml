@@ -10,7 +10,7 @@ jobs:
 
   windows:
     runs-on: windows-latest
-    needs: ubuntu  # Run windows after ubuntu
+    needs: ubuntu  # Runs after ubuntu
     steps:
       - name: Check if Key Vault Exists
         shell: pwsh
@@ -25,11 +25,22 @@ jobs:
 
   infrastructure:
     runs-on: windows-latest
-    needs: [ubuntu, windows]  # Runs after ubuntu and windows
+    needs: windows  # Runs after windows job
+    displayName: 'Infrastructure Functions'
     strategy:
       runOnce:
         deploy:
           steps:
+            - name: Create Key Vault (ARM Template)
+              shell: pwsh
+              run: |
+                # Simulated Key Vault creation command with conditional check on resourceExists
+                if ($env:resourceExists -eq "false") {
+                  Write-Output "Creating Key Vault..."
+                  # Add key vault creation logic here
+                } else {
+                  Write-Output "Key Vault already exists, skipping creation."
+                }
             - name: Display Key Vault Properties
               shell: pwsh
               run: |
@@ -38,6 +49,6 @@ jobs:
 
   macos:
     runs-on: macos-latest
-    needs: [ubuntu, windows, infrastructure]  # Runs after all other jobs
+    needs: [ubuntu, windows, infrastructure]  # Runs after all jobs
     steps:
       - run: date
