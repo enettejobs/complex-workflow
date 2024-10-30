@@ -9,6 +9,11 @@ jobs:
     - run: date
   windows:
     runs-on: windows-latest
+    - job: CheckKeyVaultExistence
+      displayName: 'Check if Key Vault Exists'
+      inputs:
+        inlineScript: |
+          Write-Host "##vso[task.setvariable variable=resourceExists]true"
     steps:
     - run: date
     - name: Display Key Vault Properties
