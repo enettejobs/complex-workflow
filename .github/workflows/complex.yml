@@ -10,6 +10,7 @@ jobs:
 
   windows:
     runs-on: windows-latest
+    needs: ubuntu  # Run windows after ubuntu
     steps:
       - name: Check if Key Vault Exists
         shell: pwsh
@@ -24,8 +25,6 @@ jobs:
 
   macos:
     runs-on: macos-latest
+    needs: [ubuntu, windows]  # Run macos after ubuntu and windows
     steps:
       - run: date
-
-# Define dependencies correctly for jobs that should run only after other jobs finish
-needs: [ubuntu, windows, macos]
