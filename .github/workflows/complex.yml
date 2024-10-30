@@ -1,4 +1,4 @@
-name: Complex
+lname: Complex
 
 on: [push]
 
@@ -12,12 +12,10 @@ jobs:
     steps:
     - run: date
     - name: Display Key Vault Properties
-      with:
-          scriptType: pscore
-          scriptLocation: inlineScript
-          inlineScript: |
-            Write-Output "Key Vault Properties:"
-            Write-Output "test properties"
+      shell: pwsh
+      run: |
+          Write-Output "Key Vault Properties:"
+          Write-Output "test properties"
   macos:
     runs-on: macos-latest
     steps:
