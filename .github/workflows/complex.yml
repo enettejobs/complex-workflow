@@ -6,28 +6,26 @@ jobs:
   ubuntu:
     runs-on: ubuntu-latest
     steps:
-    - run: date
+      - run: date
+
   windows:
     runs-on: windows-latest
-    - job: CheckKeyVaultExistence
-      displayName: 'Check if Key Vault Exists'
-      inputs:
-        inlineScript: |
-          Write-Host "##vso[task.setvariable variable=resourceExists]true"
     steps:
-    - run: date
-    - name: Display Key Vault Properties
-      shell: pwsh
-      run: |
+      - name: Check if Key Vault Exists
+        shell: pwsh
+        run: |
+          Write-Host "##vso[task.setvariable variable=resourceExists]true"
+      - run: date
+      - name: Display Key Vault Properties
+        shell: pwsh
+        run: |
           Write-Output "Key Vault Properties:"
           Write-Output "test properties"
+
   macos:
     runs-on: macos-latest
     steps:
-    - run: date
-  depends:
-    needs: [ubuntu, windows, macos]
-    runs-on: macos-latest
-    steps:
-    - run: date
-  
+      - run: date
+
+# Define dependencies correctly for jobs that should run only after other jobs finish
+needs: [ubuntu, windows, macos]
