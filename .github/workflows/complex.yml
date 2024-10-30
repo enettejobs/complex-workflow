@@ -23,8 +23,21 @@ jobs:
           Write-Output "Key Vault Properties:"
           Write-Output "test properties"
 
+  infrastructure:
+    runs-on: windows-latest
+    needs: [ubuntu, windows]  # Runs after ubuntu and windows
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - name: Display Key Vault Properties
+              shell: pwsh
+              run: |
+                Write-Output "resourceExists:"
+                Write-Output "$env:resourceExists"
+
   macos:
     runs-on: macos-latest
-    needs: [ubuntu, windows]  # Run macos after ubuntu and windows
+    needs: [ubuntu, windows, infrastructure]  # Runs after all other jobs
     steps:
       - run: date
